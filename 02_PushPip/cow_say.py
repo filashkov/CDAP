@@ -32,8 +32,7 @@ def main():
     cowfile_content = None
     if args.cow != 'default':
         try:
-            with open(args.cow, 'r') as file:
-                cowfile_content = file.read()
+            cowfile_content = cowsay.get_cow(args.cow)
         except FileNotFoundError:
             warn(f"Cowfile '{args.cow}' not found. Using default.")
             args.cow = 'default'
