@@ -1,4 +1,13 @@
 import random
+import urllib.request
+
+VOC_URL = "https://raw.githubusercontent.com/Harrix/Russian-Nouns/main/dist/russian_nouns.txt"
+
+def read_from_url(url):
+    with urllib.request.urlopen(url) as response:
+        data = response.read().decode('utf-8')
+        vocabulary = data.split('\n')
+    return [word for word in vocabulary if word]
 
 def bullscows(guess: str, secret: str) -> (int, int):
     bulls = sum(g == s for g, s in zip(guess, secret))
@@ -30,5 +39,5 @@ def gameplay(ask: callable, inform: callable, words: list[str]) -> int:
             return attempts
 
 if __name__ == "__main__":
-    words = ["ропот", "полип", "малина", "киви", "коктель"]
-    gameplay(ask, inform, words)
+    vocabulary = read_from_url(VOC_URL)
+    gameplay(ask, inform, vocabulary)
