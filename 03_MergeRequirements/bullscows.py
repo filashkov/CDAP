@@ -11,7 +11,8 @@ def read_from_url(url):
 
 def bullscows(guess: str, secret: str) -> (int, int):
     bulls = sum(g == s for g, s in zip(guess, secret))
-    cows = sum(min(guess.count(char), secret.count(char)) for char in set(guess)) - bulls
+    # how many letters of guess are in secret
+    cows = len(set(guess) & set(secret))    
     return bulls, cows
 
 def ask(prompt: str, valid: list[str] = None) -> str:
