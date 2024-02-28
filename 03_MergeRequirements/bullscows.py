@@ -2,8 +2,13 @@ import random
 import urllib.request
 from typing import Tuple
 
+import cowsay
+
 
 VOC_URL = "https://raw.githubusercontent.com/Harrix/Russian-Nouns/main/dist/russian_nouns.txt"
+COW_FILE = "cat.cow"
+with open(COW_FILE) as file_cow:
+    cow = cowsay.read_dot_cow(file_cow)
 
 
 def read_from_url(url):
@@ -22,7 +27,7 @@ def bullscows(guess: str, secret: str) -> Tuple[int, int]:
 
 def ask(prompt: str, valid: list[str] = None) -> str:
     while True:
-        guess = input(prompt).strip()
+        guess = input(cowsay.cowsay(prompt, cowfile=cow) + "\n").strip()
         if valid is None or guess in valid:
             return guess
         print("Слово отсутствует в словаре. Попробуйте ещё раз")
@@ -37,7 +42,7 @@ def gameplay(ask: callable, inform: callable, words: list[str]) -> int:
     attempts = 0
     
     while True:
-        guess = ask("Введите слово: ", words)
+        guess = ask("Введите слово", words)
         attempts += 1
         b, c = bullscows(guess, secret)
         inform("Быки: {}, Коровы: {}", b, c)
