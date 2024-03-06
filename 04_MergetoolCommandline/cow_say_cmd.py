@@ -18,37 +18,29 @@ class CowsayCmd(cmd.Cmd):
         'List available cowfiles: list_cows'
         print("\n".join(self.cow_types))
 
-    def do_cowsay(self, line):
-        'Speak as a cow: cowsay message [--cow COW] [--eyes EYES] [--tongue TONGUE]'
+    def _parse_and_execute(self, line, command, action_fn):
+        'Helper method to parse arguments and execute the cowsay commands'
         args = shlex.split(line)
-        parser = argparse.ArgumentParser(prog='cowsay')
+        parser = argparse.ArgumentParser(prog=command)
         parser.add_argument('message', nargs='?', default='', help="Cow's message")
         parser.add_argument('--cow', default='default', help='Select cowfile')
         parser.add_argument('--eyes', default='oo', help='Select eyes')
         parser.add_argument('--tongue', default='  ', help='Select tongue')
-        
+
         try:
             parsed_args = parser.parse_args(args)
-            print(cowsay.cowsay(parsed_args.message, cow=parsed_args.cow,
-                                eyes=parsed_args.eyes, tongue=parsed_args.tongue))
+            print(action_fn(parsed_args.message, cow=parsed_args.cow,
+                            eyes=parsed_args.eyes, tongue=parsed_args.tongue))
         except SystemExit:
             pass  # argparse throws SystemExit on error; prevent this from closing the shell
 
+    def do_cowsay(self, line):
+        'Speak as a cow: cowsay message [--cow COW] [--eyes EYES] [--tongue TONGUE]'
+        self._parse_and_execute(line, 'cowsay', cowsay.cowsay)
+
     def do_cowthink(self, line):
         'Think as a cow: cowthink message [--cow COW] [--eyes EYES] [--tongue TONGUE]'
-        args = shlex.split(line)
-        parser = argparse.ArgumentParser(prog='cowthink')
-        parser.add_argument('message', nargs='?', default='', help="Cow's message")
-        parser.add_argument('--cow', default='default', help='Select cowfile')
-        parser.add_argument('--eyes', default='oo', help='Select eyes')
-        parser.add_argument('--tongue', default='  ', help='Select tongue')
-        
-        try:
-            parsed_args = parser.parse_args(args)
-            print(cowsay.cowthink(parsed_args.message, cow=parsed_args.cow,
-                                  eyes=parsed_args.eyes, tongue=parsed_args.tongue))
-        except SystemExit:
-            pass  # argparse throws SystemExit on error; prevent this from closing the shell
+        self._parse_and_execute(line, 'cowthink', cowsay.cowthink)
 
     def complete_eyes(self, text, line, begidx, endidx):
         if not text:
