@@ -9,13 +9,14 @@ class CowsayCmd(cmd.Cmd):
     prompt = "(cowsay) "
 
     # Providing simple tab completion for certain fields
+    # Note: Autocompletion for non-alphabetic characters may not work.
     eyes_options = ['oo', '00', 'OO', 'xx', '==', '$$']
     tongue_options = ['  ', 'U ', '++', '--', 'WW']
-    cow_types = ['default', 'tux', 'dragon', 'cheese']
+    cow_types = cowsay.list_cows()
 
     def do_list_cows(self, arg):
         'List available cowfiles: list_cows'
-        print("\n".join(cowsay.list_cows()))
+        print("\n".join(self.cow_types))
 
     def do_cowsay(self, line):
         'Speak as a cow: cowsay message [--cow COW] [--eyes EYES] [--tongue TONGUE]'
@@ -66,6 +67,15 @@ class CowsayCmd(cmd.Cmd):
             return self.cow_types
         else:
             return [option for option in self.cow_types if option.startswith(text)]
+
+    def completedefault(self, text, line, begidx, endidx):
+        if '--eyes' in line:
+            return self.complete_eyes(text, line, begidx, endidx)
+        elif '--tongue' in line:
+            return self.complete_tongue(text, line, begidx, endidx)
+        elif '--cow' in line:
+            return self.complete_cow(text, line, begidx, endidx)
+        return []
 
     def do_exit(self, line):
         'Exit the cowsay shell'
