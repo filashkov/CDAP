@@ -29,8 +29,8 @@ class CowsayCmd(cmd.Cmd):
         
         try:
             parsed_args = parser.parse_args(args)
-            cowsay.cowsay(parsed_args.message, cow=parsed_args.cow,
-                          eyes=parsed_args.eyes, tongue=parsed_args.tongue)
+            print(cowsay.cowsay(parsed_args.message, cow=parsed_args.cow,
+                                eyes=parsed_args.eyes, tongue=parsed_args.tongue))
         except SystemExit:
             pass  # argparse throws SystemExit on error; prevent this from closing the shell
 
