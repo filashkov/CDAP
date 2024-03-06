@@ -23,9 +23,9 @@ class CowsayCmd(cmd.Cmd):
         args = shlex.split(line)
         parser = argparse.ArgumentParser(prog='cowsay')
         parser.add_argument('message', nargs='?', default='', help="Cow's message")
-        parser.add_argument('--cow', default='default', help='Select cowfile', choices=self.cow_types)
-        parser.add_argument('--eyes', default='oo', help='Select eyes', choices=self.eyes_options)
-        parser.add_argument('--tongue', default='  ', help='Select tongue', choices=self.tongue_options)
+        parser.add_argument('--cow', default='default', help='Select cowfile')
+        parser.add_argument('--eyes', default='oo', help='Select eyes')
+        parser.add_argument('--tongue', default='  ', help='Select tongue')
         
         try:
             parsed_args = parser.parse_args(args)
@@ -39,9 +39,9 @@ class CowsayCmd(cmd.Cmd):
         args = shlex.split(line)
         parser = argparse.ArgumentParser(prog='cowthink')
         parser.add_argument('message', nargs='?', default='', help="Cow's message")
-        parser.add_argument('--cow', default='default', help='Select cowfile', choices=self.cow_types)
-        parser.add_argument('--eyes', default='oo', help='Select eyes', choices=self.eyes_options)
-        parser.add_argument('--tongue', default='  ', help='Select tongue', choices=self.tongue_options)
+        parser.add_argument('--cow', default='default', help='Select cowfile')
+        parser.add_argument('--eyes', default='oo', help='Select eyes')
+        parser.add_argument('--tongue', default='  ', help='Select tongue')
         
         try:
             parsed_args = parser.parse_args(args)
